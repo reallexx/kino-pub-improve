@@ -1,0 +1,151 @@
+/*
+ * Сайт рисует полноэкранный оверлей «ПРОСМОТРЕНО» на a.darken.
+ * Превращаем его в компактную плашку: постер виден, текст читается.
+ */
+
+.item-poster a.darken,
+.item-poster a.kpi-watched,
+.item-media a.darken-mini,
+.item-media a.kpi-watched,
+.util-item a.darken,
+.util-item a.darken-mini,
+.util-item a.kpi-watched,
+a.thumbnail.darken,
+a.thumbnail.darken-mini,
+a.thumbnail.kpi-watched,
+a[href*='/item/view/'].darken,
+a[href*='/item/view/'].darken-mini,
+a[href*='/item/view/'].kpi-watched {
+  position: relative !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.item-poster a.darken img,
+.item-poster a.kpi-watched img,
+.item-media a.darken-mini img,
+.item-media a.kpi-watched img,
+.util-item a.darken img,
+.util-item a.darken-mini img,
+.util-item a.kpi-watched img,
+a.thumbnail.darken img,
+a.thumbnail.darken-mini img,
+a.thumbnail.kpi-watched img,
+a[href*='/item/view/'].darken img,
+a[href*='/item/view/'].darken-mini img,
+a[href*='/item/view/'].kpi-watched img {
+  opacity: 0.78 !important;
+  filter: grayscale(0.75) brightness(0.88) !important;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+.item-poster a.darken:hover img,
+.item-poster a.kpi-watched:hover img,
+.item-media a.darken-mini:hover img,
+.item-media a.kpi-watched:hover img,
+.util-item a.darken:hover img,
+.util-item a.darken-mini:hover img,
+.util-item a.kpi-watched:hover img,
+a.thumbnail.darken:hover img,
+a.thumbnail.darken-mini:hover img,
+a.thumbnail.kpi-watched:hover img,
+a[href*='/item/view/'].darken:hover img,
+a[href*='/item/view/'].darken-mini:hover img,
+a[href*='/item/view/'].kpi-watched:hover img {
+  opacity: 0.92 !important;
+  filter: grayscale(0.35) brightness(0.95) !important;
+}
+
+/* Убираем полноразмерную тёмную заливку */
+.item-poster a.darken::before,
+.item-poster a.kpi-watched::before,
+.item-media a.darken-mini::before,
+.item-media a.kpi-watched::before,
+.util-item a.darken::before,
+.util-item a.darken-mini::before,
+.util-item a.kpi-watched::before,
+a.thumbnail.darken::before,
+a.thumbnail.darken-mini::before,
+a.thumbnail.kpi-watched::before,
+a[href*='/item/view/'].darken::before,
+a[href*='/item/view/'].darken-mini::before,
+a[href*='/item/view/'].kpi-watched::before {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  opacity: 0 !important;
+}
+
+/* Плашка по центру вместо залитого постера (в т.ч. узкие постеры поиска) */
+.item-poster a.darken::after,
+.item-poster a.kpi-watched::after,
+.item-media a.darken-mini::after,
+.item-media a.kpi-watched::after,
+.util-item a.darken::after,
+.util-item a.darken-mini::after,
+.util-item a.kpi-watched::after,
+a.thumbnail.darken::after,
+a.thumbnail.darken-mini::after,
+a.thumbnail.kpi-watched::after,
+a[href*='/item/view/'].darken::after,
+a[href*='/item/view/'].darken-mini::after,
+a[href*='/item/view/'].kpi-watched::after {
+  content: 'ПРОСМОТРЕНО' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: calc(100% - 10px) !important;
+  margin: 0 !important;
+  padding: 4px 7px !important;
+  transform: translate(-50%, -50%) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  border-radius: 4px !important;
+  background: rgba(0, 0, 0, 0.72) !important;
+  background-color: rgba(0, 0, 0, 0.72) !important;
+  background-image: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+  line-height: 1.1 !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  text-shadow: none !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  opacity: 1 !important;
+  z-index: 5 !important;
+  pointer-events: none !important;
+}
+
+/* Поиск: ещё компактнее на узких постерах в строках результатов */
+.item a[href*='/item/view/'].darken::after,
+.item a[href*='/item/view/'].darken-mini::after,
+.item a[href*='/item/view/'].kpi-watched::after,
+.search-item a[href*='/item/view/'].darken::after,
+.search-item a[href*='/item/view/'].kpi-watched::after {
+  font-size: 10px !important;
+  padding: 3px 5px !important;
+  letter-spacing: 0.02em !important;
+  max-width: calc(100% - 6px) !important;
+}
+
+.kpi-watched-processing {
+  outline: 1px dashed rgba(120, 180, 120, 0.45);
+  outline-offset: 2px;
+}
+
+/* Полностью скрываем карточку списка (колонка / util-item) */
+.kpi-hidden-watched {
+  display: none !important;
+}

@@ -1,0 +1,15 @@
+{
+  "name": "kino-pub-improve",
+  "version": "0.0.1.0",
+  "private": true,
+  "description": "Chrome extension: mark watched Kinopub items and sync movies to MyShows",
+  "scripts": {
+    "test": "node --test test/match-utils.test.js test/hosts.test.js",
+    "typecheck": "tsc -p jsconfig.json --noEmit",
+    "pack": "node scripts/pack.js"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.2.2",
+    "typescript": "^7.0.2"
+  }
+}

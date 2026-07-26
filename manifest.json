@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "KinoPub Improve",
+  "version": "0.0.1.0",
+  "description": "Отмечает просмотренные на Kinopub/зеркалах и синхронизирует фильмы в MyShows",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "KinoPub Improve",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon.png"
+    }
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "js": ["lib/hosts.js", "lib/match-utils.js", "content-scripts/content.js"],
+      "css": ["content-scripts/styles.css"],
+      "matches": ["*://kino.watch/*"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": ["activeTab", "tabs", "scripting", "storage", "cookies", "sidePanel"],
+  "host_permissions": ["*://kino.watch/*", "*://myshows.me/*"],
+  "optional_host_permissions": ["*://*/*"]
+}

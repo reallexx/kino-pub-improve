@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "strict": false,
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM"],
+    "noEmit": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "types": ["chrome"]
+  },
+  "include": ["lib/match-utils.js", "lib/hosts.js"],
+  "exclude": ["node_modules", "dist"]
+}

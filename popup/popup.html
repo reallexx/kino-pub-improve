@@ -1,0 +1,221 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      // Chrome не умеет сжимать уже открытый popup после display:none.
+      // Класс должен быть на первом кадре, иначе остаётся пустота/скролл.
+      (function applyCollapsibleSectionClassesEarly() {
+        try {
+          if (
+            localStorage.getItem('kino-pub-improve-myshows-sync-section-enabled') ===
+            'true'
+          ) {
+            document.documentElement.classList.add('myshows-section-open');
+          }
+          if (
+            localStorage.getItem('kino-pub-improve-hosts-section-enabled') === 'true'
+          ) {
+            document.documentElement.classList.add('hosts-section-open');
+          }
+        } catch (error) {
+          // ignore
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="panel.css" />
+  </head>
+  <body class="panel-body">
+    <div class="switch-container">
+      <span class="switch-label">
+        <span class="switch-label-text">Фоновый режим</span>
+        <span
+          class="help-tip"
+          tabindex="0"
+          data-tip="Автоматически сканирует списки Kinopub и отмечает просмотренное при открытии/подгрузке страниц."
+          >?</span
+        >
+      </span>
+      <label class="switch">
+        <input type="checkbox" id="backgroundButton" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="switch-container">
+      <span class="switch-label">
+        <span class="switch-label-text">Скрывать просмотренное</span>
+        <span
+          class="help-tip"
+          tabindex="0"
+          data-tip="Прячет уже просмотренные карточки из списков, а не только затемняет их."
+          >?</span
+        >
+      </span>
+      <label class="switch">
+        <input type="checkbox" id="hideWatchedButton" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <button id="markWatchedButton" class="primary">Отметить просмотренные</button>
+
+    <div class="row cache-actions">
+      <button id="exportCacheButton" class="secondary" type="button" title="Сохранить кэш просмотренных в JSON-файл">
+        Экспорт
+      </button>
+      <button id="importCacheButton" class="secondary" type="button" title="Загрузить кэш из JSON-файла">
+        Импорт
+      </button>
+      <button id="resetCacheButton" class="danger" type="button" title="Очистить локальный кэш просмотренных/непросмотренных">
+        Сброс
+      </button>
+    </div>
+    <input id="importCacheInput" type="file" accept="application/json,.json" hidden />
+
+    <div class="section">
+      <div class="switch-container">
+        <span class="switch-label">
+          <span class="switch-label-text">Синхронизация с MyShows</span>
+          <span
+            class="help-tip"
+            tabindex="0"
+            data-tip="Показывает блок переноса просмотренных фильмов Kinopub → статус finished в MyShows."
+            >?</span
+          >
+        </span>
+        <label class="switch">
+          <input type="checkbox" id="myshowsSyncSectionToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div id="myshowsSyncSectionBody" class="section-body">
+        <div class="hint">Kinopub → MyShows. Нужна активная сессия на myshows.me.</div>
+
+        <div>
+          <label class="field-label" for="myshowsSyncContentType">
+            Что синхронизировать
+            <span
+              class="help-tip"
+              tabindex="0"
+              data-tip="Пока стабильно работают только фильмы. Сериалы — в разработке."
+              >?</span
+            >
+          </label>
+          <select id="myshowsSyncContentType">
+            <option value="movies">Фильмы</option>
+            <option value="series">Сериалы (в разработке)</option>
+            <option value="moviesAndSeries">Фильмы и сериалы (в разработке)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="field-label" for="myshowsSyncMode">
+            Источник
+            <span
+              class="help-tip"
+              tabindex="0"
+              data-tip="Откуда брать список: кэш расширения, карточки на текущей странице или история просмотров Kinopub."
+              >?</span
+            >
+          </label>
+          <select id="myshowsSyncMode">
+            <option value="cache">Кэш расширения (просмотренные)</option>
+            <option value="currentPage">Текущая страница списка</option>
+            <option value="history">История Kinopub</option>
+          </select>
+        </div>
+
+        <div class="switch-container">
+          <span class="switch-label">
+            <span class="switch-label-text">Только проверить (dry-run)</span>
+            <span
+              class="help-tip"
+              tabindex="0"
+              data-tip="Прогоняет матчинг и пишет отчёт, но ничего не отмечает в MyShows. Удобно для проверки перед боевым запуском."
+              >?</span
+            >
+          </span>
+          <label class="switch">
+            <input type="checkbox" id="myshowsDryRunToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="row">
+          <button id="myshowsSyncButton" class="primary" type="button">Запустить</button>
+          <button id="myshowsCancelButton" class="danger" type="button" disabled>Стоп</button>
+        </div>
+        <a id="myshowsReportLink" class="report-link" href="#" aria-disabled="true">Открыть отчёт</a>
+        <div id="myshowsSyncStatus" class="status"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="switch-container">
+        <span class="switch-label">
+          <span class="switch-label-text">Сайты</span>
+          <span
+            class="help-tip"
+            tabindex="0"
+            data-tip="Основной домен Kinopub и зеркала, на которых работает скан и sync."
+            >?</span
+          >
+        </span>
+        <label class="switch">
+          <input type="checkbox" id="hostsSectionToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div id="hostsSectionBody" class="section-body">
+        <div>
+          <label class="field-label" for="mainHostInput">
+            Основной URL
+            <span
+              class="help-tip"
+              tabindex="0"
+              data-tip="Главный домен Kinopub. Используется как запасной origin для sync, если вкладка зеркала не открыта."
+              >?</span
+            >
+          </label>
+          <input id="mainHostInput" type="text" placeholder="kino.watch" autocomplete="off" />
+        </div>
+
+        <div>
+          <label class="field-label" for="mirrorHostInput">
+            Зеркало
+            <span
+              class="help-tip"
+              tabindex="0"
+              data-tip="Дополнительные домены Kinopub. На них тоже внедряется скан просмотренных."
+              >?</span
+            >
+          </label>
+          <div class="row">
+            <input id="mirrorHostInput" type="text" placeholder="пример: kino.pub" autocomplete="off" />
+            <button id="addMirrorButton" class="secondary" type="button">Добавить</button>
+          </div>
+        </div>
+
+        <div id="mirrorsList" class="mirrors-list"></div>
+
+        <button id="saveHostsButton" class="primary" type="button">Сохранить URL</button>
+      </div>
+      <div id="hostsStatus" class="status"></div>
+    </div>
+
+    <div class="footer-links">
+      <button id="openOptionsButton" class="linkish" type="button">Настройки (TTL, паузы…)</button>
+      <button id="openSidePanelButton" class="linkish" type="button">Открыть в боковой панели</button>
+    </div>
+    <div class="hint footer-hint">
+      Расширенные настройки: ПКМ по иконке → «Параметры» или кнопка выше.
+    </div>
+
+    <script src="../lib/hosts.js"></script>
+    <script src="hosts-form.js"></script>
+    <script src="help-tips.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>KinoPub Improve — настройки</title>
+    <link rel="stylesheet" href="../popup/panel.css" />
+    <style>
+      body.options-body {
+        width: auto;
+        max-width: 520px;
+        margin: 24px auto;
+        padding: 20px;
+        overflow: visible;
+        border-radius: 8px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        color: #fff;
+        font-size: 18px;
+      }
+
+      .options-status {
+        margin-top: 8px;
+      }
+
+      .defaults-note {
+        margin-top: 4px;
+      }
+
+      body.options-body .mirrors-list {
+        max-height: 220px;
+      }
+    </style>
+  </head>
+  <body class="panel-body options-body">
+    <h1>Настройки KinoPub Improve</h1>
+    <div class="hint">
+      Эти параметры влияют на скан карточек и синхронизацию с MyShows.
+    </div>
+    <div class="hint defaults-note">
+      Дефолты уже нормальные для обычного использования. Меняй только если ловишь
+      rate-limit или хочешь агрессивнее/аккуратнее сканировать.
+    </div>
+
+    <div class="section">
+      <h2>Сайты</h2>
+      <div>
+        <label class="field-label" for="mainHostInput">
+          Основной URL
+          <span
+            class="help-tip"
+            tabindex="0"
+            data-tip="Главный домен Kinopub. Используется как запасной origin для sync, если вкладка зеркала не открыта."
+            >?</span
+          >
+        </label>
+        <input id="mainHostInput" type="text" placeholder="kino.watch" autocomplete="off" />
+      </div>
+      <div>
+        <label class="field-label" for="mirrorHostInput">
+          Зеркало
+          <span
+            class="help-tip"
+            tabindex="0"
+            data-tip="Дополнительные домены Kinopub. На них тоже внедряется скан просмотренных."
+            >?</span
+          >
+        </label>
+        <div class="row">
+          <input id="mirrorHostInput" type="text" placeholder="пример: kino.pub" autocomplete="off" />
+          <button id="addMirrorButton" class="secondary" type="button">Добавить</button>
+        </div>
+      </div>
+      <div id="mirrorsList" class="mirrors-list"></div>
+      <button id="saveHostsButton" class="primary" type="button">Сохранить URL</button>
+      <div id="hostsStatus" class="status"></div>
+    </div>
+
+    <div class="section">
+      <h2>Производительность</h2>
+      <div>
+        <label class="field-label" for="unwatchedTtlInput">
+          TTL непросмотренных (часы)
+          <span
+            class="help-tip"
+            tabindex="0"
+            data-tip="Сколько часов помнить, что карточка «не просмотрена», чтобы не дергать Kinopub повторно. Меньше — свежее, но больше запросов. По умолчанию: 12."
+            >?</span
+          >
+        </label>
+        <input id="unwatchedTtlInput" type="number" min="1" max="168" step="1" />
+      </div>
+      <div>
+        <label class="field-label" for="scanBatchSizeInput">
+          Размер батча скана
+          <span
+            class="help-tip"
+            tabindex="0"
+            data-tip="Сколько карточек проверять параллельно на странице списка. Больше — быстрее, но легче упереться в лимиты Kinopub. По умолчанию: 5."
+            >?</span
+          >
+        </label>
+        <input id="scanBatchSizeInput" type="number" min="1" max="20" step="1" />
+      </div>
+      <div>
+        <label class="field-label" for="syncDelayInput">
+          Пауза sync (мс)
+          <span
+            class="help-tip"
+            tabindex="0"
+            data-tip="Пауза между фильмами при синхронизации в MyShows. Нужна, чтобы не забанили за частые запросы. По умолчанию: 450."
+            >?</span
+          >
+        </label>
+        <input id="syncDelayInput" type="number" min="0" max="5000" step="50" />
+      </div>
+      <div>
+        <label class="field-label" for="myshowsRpcDelayInput">
+          Пауза MyShows RPC (мс)
+          <span
+            class="help-tip"
+            tabindex="0"
+            data-tip="Минимальный интервал между вызовами API MyShows (поиск, GetById, отметка). По умолчанию: 300."
+            >?</span
+          >
+        </label>
+        <input id="myshowsRpcDelayInput" type="number" min="0" max="5000" step="50" />
+      </div>
+      <button id="saveRuntimeSettingsButton" class="primary" type="button">Сохранить</button>
+      <div id="optionsStatus" class="status options-status"></div>
+    </div>
+
+    <script src="../lib/hosts.js"></script>
+    <script src="../popup/hosts-form.js"></script>
+    <script src="../popup/help-tips.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

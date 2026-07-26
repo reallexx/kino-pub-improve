@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>KinoPub Improve — отчёт MyShows</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #1f1f1f;
+        --panel: #2a2a2a;
+        --text: #eee;
+        --muted: #999;
+        --ok: #7dca8a;
+        --warn: #e0b567;
+        --err: #f08888;
+        --link: #8ec7ff;
+        --accent: #449d44;
+      }
+
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family: Segoe UI, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.45;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 22px;
+      }
+
+      h2 {
+        margin: 28px 0 10px;
+        font-size: 16px;
+      }
+
+      .meta,
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 16px 0 8px;
+      }
+
+      .chip {
+        background: var(--panel);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .chip strong {
+        display: block;
+        font-size: 18px;
+        margin-top: 2px;
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 0 12px;
+      }
+
+      .filter-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--panel);
+        border: 1px solid #444;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12px;
+        color: var(--text);
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .filter-toggle input {
+        margin: 0;
+        accent-color: var(--accent);
+      }
+
+      .filter-toggle.is-active {
+        border-color: var(--accent);
+        background: #2f3a2f;
+      }
+
+      .filter-count {
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--panel);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid #3a3a3a;
+        vertical-align: top;
+        font-size: 13px;
+      }
+
+      th {
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      a {
+        color: var(--link);
+      }
+
+      .reason {
+        white-space: nowrap;
+      }
+
+      .status-running {
+        color: var(--warn);
+      }
+
+      .status-done {
+        color: var(--ok);
+      }
+
+      .status-failed {
+        color: var(--err);
+      }
+
+      .empty {
+        color: var(--muted);
+        font-size: 13px;
+        padding: 8px 0;
+      }
+
+      .candidates {
+        margin: 4px 0 0;
+        padding-left: 18px;
+      }
+
+      .candidates li {
+        margin: 4px 0;
+      }
+
+      .mark-candidate {
+        margin-left: 8px;
+        border: 0;
+        border-radius: 6px;
+        padding: 2px 8px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .mark-candidate:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Отчёт синхронизации MyShows</h1>
+    <div id="meta" class="meta">Загрузка...</div>
+    <div id="summary" class="summary"></div>
+
+    <h2>Проблемы / пропуски</h2>
+    <div id="skippedFilters" class="filters"></div>
+    <div id="skippedFilterCount" class="filter-count"></div>
+    <div id="skipped"></div>
+
+    <h2>Ошибки</h2>
+    <div id="errors"></div>
+
+    <h2 id="syncedHeading">Успешно отмечено</h2>
+    <div id="synced"></div>
+
+    <script src="report.js"></script>
+  </body>
+</html>
